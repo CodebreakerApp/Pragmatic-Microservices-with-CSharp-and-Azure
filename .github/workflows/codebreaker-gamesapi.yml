@@ -8,7 +8,7 @@ on:
     - 'ch08/Codebreaker.GameAPIs/**'
     - '.github/workflows/shared-test.yml'
     - '.github/workflows/shared-build-image.yml'
-    - '.github/workflows/shared-deploy-containerapps.yml'
+    - '.github/workflows/shared-deploy-containerapps-yamlconfig.yml'
     - '.github/workflows/codebreaker-bot.yml'
 
   workflow_dispatch:
