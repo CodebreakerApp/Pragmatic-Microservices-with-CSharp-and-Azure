@@ -34,17 +34,8 @@ jobs:
 
   deploy:
     needs: build-and-publish
-    uses: ./.github/workflows/shared-deploy-containerapps.yml
+    uses: ./.github/workflows/shared-deploy-containerapps-yamlconfig.yml
     with:
-      container-repository: 'codebreaker/gameapis'
-      acr-name: ${{ vars.ACR_NAME }}
-      registry-login-server: ${{ vars.REGISTRY_LOGIN_SERVER }}      
-      container-appname: 'codebreaker-gameapis-v3'
-      containerapps-environment: ${{ vars.CONTAINERAPPS_ENVIRONMENT }}
-      image-tag: '3.9.0-beta.${{ github.run_number }}'
-      resource-group: 'rg-codebreaker-dev'
-      location: 'westeurope'
+      yaml-config-path: ./ch08/infrastructure/gamesapi-config.yml
     secrets:
-      REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
-      REGISTRY_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
