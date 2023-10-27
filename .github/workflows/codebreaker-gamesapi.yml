@@ -3,7 +3,7 @@ name: gameapis service
 on:
   push:
     branches: 
-      [ main ]
+      [ main, container-app-github-action-yml-config ]
     paths:
     - 'ch08/Codebreaker.GameAPIs/**'
     - '.github/workflows/shared-test.yml'
