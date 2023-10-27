@@ -3,6 +3,10 @@ name: Shared workflow to deploy to Azure Container Apps (using YML config)
 on:
   workflow_call:
     inputs:
+      resource-group:
+        description: 'The name of the resource group'
+        required: true
+        type: string
       yaml-config-path:
         description: 'The path to the YAML file containing the configuration for the container app'
         required: true
@@ -29,3 +33,4 @@ jobs:
         uses: azure/container-apps-deploy-action@v2
         with:
           yamlConfigPath: ${{ inputs.yaml-config-path }}
+          resourceGroup: ${{ inputs.resource-group }}

@@ -1,11 +1,22 @@
+# https://learn.microsoft.com/en-us/azure/container-apps/azure-resource-manager-api-spec?tabs=yaml#container-app-examples
+location: westeurope
+name: codebreaker-gameapis-v3
+resourceGroup: rg-codebreaker-dev # will not be used
+type: Microsoft.App/containerApps
 properties:
-  imageToDeploy:  ${{ vars.REGISTRY_LOGIN_SERVER }}/codebreaker/gameapis:3.9.0-beta.${{ github.run_number }}
-  registryUrl: ${{ vars.REGISTRY_LOGIN_SERVER }}
-  registryUsername: ${{ secrets.REGISTRY_USERNAME }}
-  registryPassword: ${{ secrets.REGISTRY_PASSWORD }}
-  containerAppName: 'codebreaker-gameapis-v3'
-  containerAppEnvironment: ${{ vars.CONTAINERAPPS_ENVIRONMENT }}
-  resourceGroup: 'rg-codebreaker-dev'
-  location: 'westeurope'
-  targetPort: 8080
-  ingress: external
+  managedEnvironmentId: /subscriptions/mysubscription/resourceGroups/rg-codebreaker-dev/providers/Microsoft.App/managedEnvironments/${{ vars.CONTAINERAPPS_ENVIRONMENT }}
+  configuration:
+    secrets:
+      - name: container-registry-password
+        value: ${{ secrets.REGISTRY_PASSWORD }}
+    ingress:
+      external: true
+      targetPort: 8080
+    registries:
+      - passwordSecretRef: container-registry-password
+        server: ${{ vars.REGISTRY_LOGIN_SERVER }}
+        username: ${{ secrets.REGISTRY_USERNAME }}
+  template:
+    containers:
+      - image: ${{ vars.REGISTRY_LOGIN_SERVER }}/codebreaker/gameapis:latest
+        name: gameapis

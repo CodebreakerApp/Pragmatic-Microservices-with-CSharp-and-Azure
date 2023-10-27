@@ -37,5 +37,6 @@ jobs:
     uses: ./.github/workflows/shared-deploy-containerapps-yamlconfig.yml
     with:
       yaml-config-path: ./ch08/infrastructure/gamesapi-config.yml
+      resource-group: rg-codebreaker-dev
     secrets:
       AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
