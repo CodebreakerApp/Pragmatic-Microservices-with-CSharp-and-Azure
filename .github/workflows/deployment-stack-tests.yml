@@ -52,7 +52,7 @@ jobs:
           inlineScript: |
             az stack group create --name ${{ inputs.deployment-stack-name }} \
             --resource-group ${{ inputs.resource-group }} \
-            --template-file ${{ inputs.bicep-file }} ${{ inputs.bicep-parameters-file != '' && '--parameters' }} ${{ inputs.bicep-parameters-file }} \
+            --template-file ${{ inputs.bicep-file }} ${{ inputs.bicep-parameters-file != '' && '--parameters' || '' }} ${{ inputs.bicep-parameters-file }} \
             --deny-settings-mode none
       - name: Run tests
         uses: ./.github/workflows/shared-test.yml
