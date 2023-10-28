@@ -1,0 +1,63 @@
+name: Shared workflow to build and test a .NET project using an Azure Deployment Stack environment
+
+on:
+  workflow_call:
+    inputs:
+      resource-group:
+        description: 'The resource group to use for the deployment stack'
+        required: true
+        type: string
+      bicep-file:
+        description: 'The path to the Bicep file to use'
+        required: true
+        type: string
+      bicep-parameters-file:
+        description: 'The path to the parameters file for Bicep'
+        required: false
+        type: string
+      deployment-stack-name:
+        description: 'The name of the deployment stack'
+        required: false
+        type: string
+        default: 'test-stack-${{ github.run_number }}'
+      project-name:
+        description: 'The name of the project to build'
+        required: true
+        type: string
+      solution-path:
+        description: 'The solution file of the project to build'
+        required: true
+        type: string
+      dotnet-version:
+        description: 'The version of .NET to use'
+        required: false
+        type: string
+
+jobs:
+  run-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Azure login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Create temporary Deployment Stack (${{ inputs.deployment-stack-name }})
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az stack group create --name ${{ inputs.deployment-stack-name }} \
+            --resource-group ${{ inputs.resource-group }} \
+            --template-file ${{ inputs.bicep-file }} ${{ inputs.bicep-parameters-file != '' && '--parameters' }} ${{ inputs.bicep-parameters-file }} \
+            --deny-settings-mode none
+      - name: Run tests
+        uses: ./.github/workflows/shared-test.yml
+        with:
+          project-name: ${{ inputs.project-name }}
+          solution-path: ${{ inputs.solution-path }}
+          dotnet-version: ${{ inputs.dotnet-version }}
+      - name: Cleanup Deployment Stack (${{ inputs.deployment-stack-name }})
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az stack group delete --resource-group ${{ inputs.resource-group }} --name ${{ inputs.deployment-stack-name }} --yes
