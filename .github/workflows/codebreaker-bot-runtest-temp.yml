@@ -20,3 +20,5 @@ jobs:
       solution-path: 'ch08/BotService.sln'
       resource-group: 'codebreaker-biceptests'
       bicep-file: './ch08/bicep/temp.bicep'
+    secrets:
+      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}

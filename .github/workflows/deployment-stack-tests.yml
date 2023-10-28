@@ -32,6 +32,10 @@ on:
         description: 'The version of .NET to use'
         required: false
         type: string
+    secrets:
+      AZURE_CREDENTIALS:
+        description: 'The credentials to use for Azure'
+        required: true
 
 jobs:
   run-test:
