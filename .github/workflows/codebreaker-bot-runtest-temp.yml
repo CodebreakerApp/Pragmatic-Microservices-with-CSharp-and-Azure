@@ -1,0 +1,22 @@
+name: Codebreaker.Bot - run the shared test workflow with deployment stacks
+
+on:
+  push:
+    branches: 
+      [ main, ch08-deployment-stacks ]
+    paths:
+    - 'ch08/Codebreaker.Bot/**'
+    - 'ch08/Codebreaker.Bot.Tests/**'
+    - '.github/workflows/shared-test.yml'
+    - '.github/workflows/codebreaker-bot-runtest-temp.yml'
+
+  workflow_dispatch:
+      
+jobs:
+  build-and-test:
+    uses: ./.github/workflows/deployment-stack-tests.yml
+    with:
+      project-name: 'Codebreaker.Bot'
+      solution-path: 'ch08/BotService.sln'
+      resource-group: 'codebreaker-biceptests'
+      bicep-file: './ch08/bicep/temp.bicep'
