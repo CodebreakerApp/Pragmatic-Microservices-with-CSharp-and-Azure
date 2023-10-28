@@ -8,6 +8,7 @@ on:
     - 'ch08/Codebreaker.Bot/**'
     - 'ch08/Codebreaker.Bot.Tests/**'
     - '.github/workflows/shared-test.yml'
+    - '.github/workflows/deployment-stack-tests.yml'
     - '.github/workflows/codebreaker-bot-runtest-temp.yml'
 
   workflow_dispatch:
