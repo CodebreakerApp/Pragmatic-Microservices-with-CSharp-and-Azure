@@ -34,7 +34,10 @@ public class GamesMemoryRepository(ILogger<GamesMemoryRepository> logger) : IGam
 
     public Task<IEnumerable<Game>> GetGamesByDateAsync(string gameType, DateOnly date, CancellationToken cancellationToken = default)
     {
-        var games = _games.Values.Where(g => DateOnly.FromDateTime(g.StartTime) == date).ToArray();
+        var games = _games.Values
+            .Where(g => DateOnly.FromDateTime(g.StartTime) == date)
+            .Where(g => g.GameType == gameType)
+            .ToArray();
         return Task.FromResult<IEnumerable<Game>>(games);
     }
 
